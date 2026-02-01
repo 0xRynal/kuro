@@ -5,9 +5,20 @@ const JOIN_ALL_FILE = path.join(__dirname, '..', 'data', 'join_all_bots_vc.json'
 const POLL_MS = 5000;
 const CMD_TTL_MS = 30000;
 
-async function doJoin(client, channelId) {
+async function doJoin(client, channelId, guildId) {
     try {
-        const channel = await client.channels.fetch(channelId).catch(() => null);
+        let channel = null;
+        if (guildId) {
+            const guild = client.guilds.cache.get(guildId);
+            if (guild) channel = await guild.channels.fetch(channelId).catch(() => null);
+        }
+        if (!channel) {
+            for (const guild of client.guilds.cache.values()) {
+                channel = await guild.channels.fetch(channelId).catch(() => null);
+                if (channel) break;
+            }
+        }
+        if (!channel) channel = await client.channels.fetch(channelId).catch(() => null);
         if (!channel?.isVoiceBased?.()) return false;
         const { joinVoiceChannel } = require('@discordjs/voice');
         joinVoiceChannel({
@@ -24,10 +35,10 @@ async function joinVoiceOnReady(client) {
     startPolling(client);
 }
 
-function writeJoinAllCommand(channelId) {
+function writeJoinAllCommand(channelId, guildId) {
     const dataDir = path.join(__dirname, '..', 'data');
     if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
-    fs.writeFileSync(JOIN_ALL_FILE, JSON.stringify({ channelId, requestedAt: Date.now() }), 'utf8');
+    fs.writeFileSync(JOIN_ALL_FILE, JSON.stringify({ channelId, guildId: guildId || null, requestedAt: Date.now() }), 'utf8');
 }
 
 function startPolling(client) {
@@ -36,11 +47,11 @@ function startPolling(client) {
         try {
             if (!fs.existsSync(JOIN_ALL_FILE)) return;
             const data = JSON.parse(fs.readFileSync(JOIN_ALL_FILE, 'utf8'));
-            const { channelId, requestedAt } = data;
+            const { channelId, guildId, requestedAt } = data;
             if (!channelId || requestedAt <= lastProcessedAt) return;
             if (Date.now() - requestedAt > CMD_TTL_MS) return;
             lastProcessedAt = requestedAt;
-            await doJoin(client, channelId);
+            await doJoin(client, channelId, guildId);
         } catch (_) {}
     }, POLL_MS);
 }

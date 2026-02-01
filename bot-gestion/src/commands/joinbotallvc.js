@@ -11,8 +11,9 @@ module.exports = {
         const channelId = args[0]?.replace(/\D/g, '') || message.mentions.channels.first()?.id;
         if (!channelId || channelId.length < 17) return message.reply(`❌ Utilisation: \`${config.prefix}joinbotallvc <channelId>\` Ex: \`${config.prefix}joinbotallvc 1467635993564676106\``);
 
-        writeJoinAllCommand(channelId);
-        const ok = await doJoin(message.client, channelId);
+        const guildId = message.guild.id;
+        writeJoinAllCommand(channelId, guildId);
+        const ok = await doJoin(message.client, channelId, guildId);
         await message.reply(ok ? `✅ Signal envoyé. Ce bot a rejoint le vocal. Les autres bots vont le rejoindre dans quelques secondes.` : `❌ Channel introuvable ou inaccessible.`);
     },
 };
