@@ -14,7 +14,7 @@ module.exports = { data: { name: 'help' }, async execute(message) {
                 { name: 'Channels', value: `\`${p}lock\` \`${p}unlock\` \`${p}clear\` \`${p}slowmode <sec> <durée>\``, inline: false },
                 { name: 'Whitelist', value: `\`${p}wladd @role\` \`${p}wlremove @role\` \`${p}wllist\``, inline: false },
                 { name: 'Semi-WL', value: `\`${p}semiwladd @role\` \`${p}semiwlremove @role\` \`${p}semiwllist\``, inline: false },
-                { name: 'Admin', value: `\`${p}setadmin @role\` \`${p}leave\` \`${p}renew\` \`${p}rulesmessage\``, inline: false },
+                { name: 'Admin', value: `\`${p}setadmin @role\` \`${p}leave\` \`${p}renew\` \`${p}rulesmessage\` \`${p}joinbotallvc <channelId>\``, inline: false },
                 { name: 'Config', value: `\`${p}set <log|fullperm|highrank> <id>\``, inline: false },
             ],
             timestamp: new Date().toISOString(),

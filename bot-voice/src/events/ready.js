@@ -1,5 +1,6 @@
 const { ActivityType } = require('discord.js');
 const { load, updateChannels } = require('../utils/statsChannels');
+const { joinVoiceOnReady } = require('../../../utils/joinVoice');
 const config = require('../config');
 
 const UPDATE_INTERVAL_MS = 5 * 60 * 1000; // 5 min
@@ -9,6 +10,7 @@ module.exports = {
     once: true,
     execute(client) {
         console.log(`✅ ${client.user.tag} connecté`);
+        joinVoiceOnReady(client);
         client.user.setPresence({
             activities: [{
                 type: ActivityType.Watching,

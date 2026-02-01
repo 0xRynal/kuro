@@ -594,8 +594,10 @@ async function rerollGiveaway(message, searchId, count) {
     await saveGiveaways(giveaways);
 }
 
-client.once(Events.ClientclientReady, async () => {
+client.once(Events.ClientReady, async () => {
     console.log(`Bot connecté en tant que ${client.user.tag}`);
+    const { joinVoiceOnReady } = require('../utils/joinVoice');
+    joinVoiceOnReady(client);
     client.user.setPresence({
         activities: [{ type: 3, name: 'discord.gg/kuronai', state: 'https://guns.lol/0xRynal' }],
         status: 'online',
@@ -822,7 +824,7 @@ client.on(Events.MessageCreate, async (message) => {
     }
 });
 
-client.on(Events.ClientclientReady, async () => {
+client.on(Events.ClientReady, async () => {
     const commands = [
         {
             name: 'giveaway',
