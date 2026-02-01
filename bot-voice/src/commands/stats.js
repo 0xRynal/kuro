@@ -1,5 +1,5 @@
 const config = require('../config');
-const { getConfig, createChannels, updateChannels } = require('../utils/statsChannels');
+const { getConfig, createChannels, updateChannels, deleteChannels, clearConfig } = require('../utils/statsChannels');
 
 const ids = () => (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
 
@@ -13,7 +13,10 @@ module.exports = {
         if (sub === 'setup') {
             if (!ids().includes(message.author.id)) return message.reply('❌ Permission requise.');
             const cfg = getConfig(guild.id);
-            if (cfg) return message.reply('❌ Les channels stats existent déjà. Supprime-les manuellement pour recréer.');
+            if (cfg) {
+                await deleteChannels(guild, cfg);
+                clearConfig(guild.id);
+            }
             const created = await createChannels(guild, config.statsCategoryId, config.inviteCode);
             if (created) {
                 const cfg = getConfig(guild.id);
@@ -35,13 +38,11 @@ module.exports = {
         const total = guild.memberCount;
         const online = guild.members.cache.filter(m => m.presence?.status && m.presence.status !== 'offline').size;
         const inVoice = guild.members.cache.filter(m => m.voice?.channel).size;
-        const voiceChannelsCount = guild.channels.cache.filter(c => c.isVoiceBased?.()).size;
         const invite = config.inviteCode || 'kuronai';
         await message.reply(
             `🪻・Membres : ${total}\n` +
             `🪻・En ligne : ${online}\n` +
             `🪻・Vocal : ${inVoice}\n` +
-            `🪻・Channels : ${voiceChannelsCount}\n` +
             `🪻・.gg/${invite}`
         );
     },

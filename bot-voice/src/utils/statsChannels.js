@@ -28,13 +28,29 @@ function setConfig(guildId, cfg) {
     save(d);
 }
 
+function clearConfig(guildId) {
+    const d = load();
+    if (d.guilds && d.guilds[guildId]) {
+        delete d.guilds[guildId];
+        save(d);
+    }
+}
+
+async function deleteChannels(guild, cfg) {
+    if (!cfg?.channels) return;
+    for (const id of Object.values(cfg.channels)) {
+        const ch = guild.channels.cache.get(id);
+        if (ch) await ch.delete().catch(() => {});
+    }
+}
+
 async function createChannels(guild, categoryId, inviteCode) {
     const cat = categoryId || DEFAULT_CATEGORY;
     const category = guild.channels.cache.get(cat);
     if (!category || category.type !== ChannelType.GuildCategory) return null;
 
-    const chNames = ['🪻・Membres : 0', '🪻・En ligne : 0', '🪻・Vocal : 0', '🪻・Channels : 0', `🪻・.gg/${inviteCode || 'kuronai'}`];
-    const keys = ['membres', 'online', 'vocal', 'channels', 'invite'];
+    const chNames = ['🪻・Membres : 0', '🪻・En ligne : 0', '🪻・Vocal : 0', `🪻・.gg/${inviteCode || 'kuronai'}`];
+    const keys = ['membres', 'online', 'vocal', 'invite'];
     const channels = {};
 
     for (let i = 0; i < chNames.length; i++) {
@@ -47,7 +63,7 @@ async function createChannels(guild, categoryId, inviteCode) {
         if (ch) channels[keys[i]] = ch.id;
     }
 
-    if (Object.keys(channels).length === 5) {
+    if (Object.keys(channels).length === 4) {
         setConfig(guild.id, { categoryId: category.id, channels });
         return channels;
     }
@@ -60,14 +76,12 @@ async function updateChannels(guild, cfg, inviteCode) {
     const total = guild.memberCount;
     const online = guild.members.cache.filter(m => m.presence?.status && m.presence.status !== 'offline').size;
     const inVoice = guild.members.cache.filter(m => m.voice?.channel).size;
-    const voiceChannelsCount = guild.channels.cache.filter(c => c.isVoiceBased?.()).size;
     const inv = inviteCode || 'kuronai';
 
     const updates = [
         [cfg.channels.membres, `🪻・Membres : ${total}`],
         [cfg.channels.online, `🪻・En ligne : ${online}`],
         [cfg.channels.vocal, `🪻・Vocal : ${inVoice}`],
-        [cfg.channels.channels, `🪻・Channels : ${voiceChannelsCount}`],
         [cfg.channels.invite, `🪻・.gg/${inv}`],
     ];
 
@@ -78,4 +92,4 @@ async function updateChannels(guild, cfg, inviteCode) {
     }
 }
 
-module.exports = { getConfig, setConfig, createChannels, updateChannels, load, DEFAULT_CATEGORY };
+module.exports = { getConfig, setConfig, clearConfig, deleteChannels, createChannels, updateChannels, load, DEFAULT_CATEGORY };
