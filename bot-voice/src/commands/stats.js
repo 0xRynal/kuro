@@ -1,3 +1,4 @@
+const { EmbedBuilder, ChannelType } = require('discord.js');
 const config = require('../config');
 const { getConfig, createChannels, updateChannels, deleteChannels, clearConfig } = require('../utils/statsChannels');
 
@@ -34,16 +35,27 @@ module.exports = {
             return message.reply('✅ Stats mises à jour.');
         }
 
-        await guild.members.fetch({ withPresences: true }).catch(() => {});
-        const total = guild.memberCount;
-        const online = guild.members.cache.filter(m => m.presence?.status && m.presence.status !== 'offline').size;
-        const inVoice = guild.members.cache.filter(m => m.voice?.channel).size;
-        const invite = config.inviteCode || 'kuronai';
-        await message.reply(
-            `🪻・Membres : ${total}\n` +
-            `🪻・En ligne : ${online}\n` +
-            `🪻・Vocal : ${inVoice}\n` +
-            `🪻・.gg/${invite}`
-        );
+        const inVoice = guild.members.cache.filter(m => m.voice?.channel).values();
+        const members = [...inVoice];
+        const inStage = members.filter(m => m.voice.channel?.type === ChannelType.GuildStageVoice).length;
+        const muted = members.filter(m => m.voice.selfMute || m.voice.mute).length;
+        const deafened = members.filter(m => m.voice.selfDeaf || m.voice.deaf).length;
+        const streaming = members.filter(m => m.voice.streaming).length;
+        const inVideo = members.filter(m => m.voice.selfVideo).length;
+
+        const embed = new EmbedBuilder()
+            .setColor(0x5865F2)
+            .setTitle(`Statistiques vocales de 🌿 ${guild.name} 🌿`)
+            .setThumbnail(guild.iconURL({ size: 256 }))
+            .setDescription(
+                `🗣️ **${members.length}** membres connectés\n` +
+                `🎭 **${inStage}** membres en conférence\n` +
+                `🔇 **${muted}** membres mute\n` +
+                `🎧 **${deafened}** membres en sourdine\n` +
+                `🔴 **${streaming}** membres en streaming\n` +
+                `📹 **${inVideo}** membres en vidéo`
+            )
+            .setTimestamp();
+        await message.reply({ embeds: [embed] });
     },
 };
