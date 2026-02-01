@@ -2,7 +2,7 @@ const guildConfig = require('./utils/guildConfig');
 
 const env = {
     logChannelId: process.env.LOG_CHANNEL_ID || '',
-    fullPermissionUserIds: (process.env.FULL_PERM_IDS || '').split(',').filter(Boolean),
+    fullPermissionUserIds: (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean),
     highRankRoleId: process.env.HIGH_RANK_ROLE_ID || '',
 };
 
@@ -13,7 +13,7 @@ function getConfig(guildId) {
     const hr = g.highRankRoleId;
     return {
         logChannelId: g.logChannelId ?? env.logChannelId,
-        fullPermissionUserIds: Array.isArray(fp) ? fp : (fp ? String(fp).split(',').filter(Boolean) : env.fullPermissionUserIds),
+        fullPermissionUserIds: Array.isArray(fp) ? fp : (fp ? String(fp).split(',').map(s => s.trim()).filter(Boolean) : env.fullPermissionUserIds),
         highRankRoleId: hr ?? env.highRankRoleId,
     };
 }
