@@ -35,19 +35,12 @@ module.exports = {
     },
     async execute(message, args) {
         if (!message.guild) return;
-        const { hasWhitelistedRole, hasFullPermissions, hasSemiWhitelistedRole } = require('../utils/whitelist');
+        const { staff, full } = require('../utils/perms');
         const { getRandomNoPermission, getRandomWrongChannel, getRandomSelfSanction, getRandomBotSanction, getRandomHierarchy, getRandomUserNotFound, getRandomInvalidDuration, getRandomBotPermission, getRandomRoleCreationError, getRandomInvalidUsage } = require('../utils/messages');
         
-        // check full permissions first
-        const hasFullPerms = hasFullPermissions(message.author.id, message.guild?.id);
+        const hasFullPerms = full(message.author.id, message.guild?.id);
         
-        // check perm user
-        const hasPermission = message.member.permissions.has([PermissionFlagsBits.ModerateMembers, PermissionFlagsBits.Administrator]);
-        const hasWhitelist = hasWhitelistedRole(message.member);
-        const hasSemiWhitelist = hasSemiWhitelistedRole(message.member); // Semi-whitelist: mute uniquement
-        const isStaff = hasPermission || hasWhitelist || hasSemiWhitelist || hasFullPerms;
-        
-        if (!isStaff) {
+        if (!staff(message.member)) {
             return message.reply(getRandomNoPermission('mute', false));
         }
 

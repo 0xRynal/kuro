@@ -9,15 +9,9 @@ module.exports = {
         if (!message.guild) return;
         const { getRandomNoPermission, getRandomWrongChannel, getRandomError } = require('../utils/messages');
         
-        const { hasFullPermissions, hasAdminRole } = require('../utils/whitelist');
+        const { staff } = require('../utils/perms');
         
-        // check full permissions first
-        const hasFullPerms = hasFullPermissions(message.author.id, message.guild?.id);
-        
-        // check perm user
-        const hasPermission = message.member.permissions.has([PermissionFlagsBits.ModerateMembers, PermissionFlagsBits.Administrator]);
-        const hasAdmin = hasAdminRole(message.member);
-        if (!hasPermission && !hasFullPerms && !hasAdmin) {
+        if (!staff(message.member)) {
             return message.reply(getRandomNoPermission('wllist', false));
         }
 

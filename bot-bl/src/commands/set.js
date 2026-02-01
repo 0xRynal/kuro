@@ -5,8 +5,7 @@ const guildConfig = require('../utils/guildConfig');
 function canSet(member) {
     if (!member) return false;
     const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
-    if (ids.includes(member.id)) return true;
-    return member.permissions?.has(PermissionFlagsBits.Administrator);
+    return ids.includes(member.id);
 }
 
 module.exports = {

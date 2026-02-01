@@ -4,7 +4,8 @@ const { get, set, addToList, removeFromList } = require('../utils/store');
 
 module.exports = { data: { name: 'antiban' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!message.member?.permissions.has(PermissionFlagsBits.Administrator)) return message.reply('❌ Admin uniquement.');
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!ids.includes(message.author.id)) return message.reply('❌ Admin uniquement.');
     const gid = message.guild.id;
     const g = get(gid);
     const sub = args[0]?.toLowerCase();

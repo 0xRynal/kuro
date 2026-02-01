@@ -4,7 +4,8 @@ const { get, add, hasLevel, LEVELS } = require('../utils/bl');
 
 module.exports = { data: { name: 'bl' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!message.member?.permissions.has(PermissionFlagsBits.BanMembers)) return message.reply('❌ Gérer les bannissements requis.');
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
     const gid = message.guild.id;
 
     if (args.length === 0) {

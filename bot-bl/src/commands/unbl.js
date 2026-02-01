@@ -4,7 +4,8 @@ const { getIds, hasLevel, getEntry, remove } = require('../utils/bl');
 
 module.exports = { data: { name: 'unbl' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!message.member?.permissions.has(PermissionFlagsBits.BanMembers)) return message.reply('❌ Gérer les bannissements requis.');
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
     if (!args[0]) return message.reply(`❌ \`${config.prefix}unbl @user|ID <1|2|3>\`\nEx: \`${config.prefix}unbl 123456789012345678 3\``);
 
     const target = message.mentions.users.first() || (args[0] && /^\d{17,19}$/.test(args[0]) ? { id: args[0] } : null);

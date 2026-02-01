@@ -1,11 +1,11 @@
-const { PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const config = require('../config');
 const { getOpenTickets } = require('../utils/tickets');
 
 function isStaff(member) {
     if (!member) return false;
-    if (member.permissions.has(PermissionFlagsBits.Administrator)) return true;
-    if (member.permissions.has(PermissionFlagsBits.ManageGuild)) return true;
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (ids.includes(member.id)) return true;
     if (config.staffRoleIds.length && config.staffRoleIds.some(rid => member.roles.cache.has(rid))) return true;
     return false;
 }

@@ -8,16 +8,12 @@ module.exports = {
     async execute(message, args) {
         if (!message.guild) return;
         const { getRandomNoPermission, getRandomError } = require('../utils/messages');
-        const { hasFullPermissions, isHighRank } = require('../utils/whitelist');
+        const { staff } = require('../utils/perms');
+        const { isHighRank } = require('../utils/whitelist');
         
-        // check full permissions first
-        const hasFullPerms = hasFullPermissions(message.author.id, message.guild?.id);
+        const isStaff = staff(message.member) || isHighRank(message.member);
         
-        // check perm user
-        const hasPermission = message.member.permissions.has([PermissionFlagsBits.ManageChannels, PermissionFlagsBits.Administrator]);
-        const isHighRankMember = isHighRank(message.member) || hasFullPerms;
-        
-        if (!hasPermission && !hasFullPerms && !isHighRankMember) {
+        if (!isStaff) {
             return message.reply('❌ Tu n\'as pas les permissions pour renouveler ce channel.');
         }
 

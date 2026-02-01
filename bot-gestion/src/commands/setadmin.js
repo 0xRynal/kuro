@@ -1,4 +1,3 @@
-const { PermissionFlagsBits } = require('discord.js');
 const config = require('../config');
 
 module.exports = {
@@ -9,16 +8,12 @@ module.exports = {
         if (!message.guild) return;
         const { getRandomNoPermission, getRandomError, getRandomInvalidUsage, getRandomUserNotFound } = require('../utils/messages');
         
-        const { hasFullPermissions } = require('../utils/whitelist');
+        const { full } = require('../utils/perms');
         
-        // check full permissions first
-        const hasFullPerms = hasFullPermissions(message.author.id, message.guild?.id);
-        
-        // check perm user (only owner or full permissions can set admin role)
         const isOwner = message.author.id === message.guild.ownerId;
-        const hasPermission = message.member.permissions.has(PermissionFlagsBits.Administrator);
+        const hasFullPerms = full(message.author.id, message.guild?.id);
         
-        if (!isOwner && !hasPermission && !hasFullPerms) {
+        if (!isOwner && !hasFullPerms) {
             return message.reply(getRandomNoPermission('wladd', false));
         }
 

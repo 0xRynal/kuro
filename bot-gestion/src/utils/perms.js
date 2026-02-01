@@ -9,11 +9,9 @@ function full(userId, guildId) {
 function staff(member) {
     if (!member) return false;
     if (full(member.id, member.guild?.id)) return true;
-    const { hasWhitelistedRole, hasSemiWhitelistedRole } = require('./whitelist');
-    if (hasWhitelistedRole(member) || hasSemiWhitelistedRole(member)) return true;
-    return member.permissions.has(PermissionFlagsBits.ModerateMembers) ||
-           member.permissions.has(PermissionFlagsBits.ManageRoles) ||
-           member.permissions.has(PermissionFlagsBits.Administrator);
+    const { hasWhitelistedRole, hasSemiWhitelistedRole, hasAdminRole } = require('./whitelist');
+    if (hasWhitelistedRole(member) || hasSemiWhitelistedRole(member) || hasAdminRole(member)) return true;
+    return false;
 }
 
 function canSanction(executor, target) {
@@ -21,7 +19,6 @@ function canSanction(executor, target) {
     const gid = executor.guild?.id || target.guild?.id;
     if (full(executor.id, gid)) return true;
     if (executor.id === executor.guild?.ownerId) return true;
-    if (executor.permissions.has(PermissionFlagsBits.Administrator)) return true;
     const { hasWhitelistedRole } = require('./whitelist');
     if (hasWhitelistedRole(target)) return false;
     if (!target.roles?.highest) return true;

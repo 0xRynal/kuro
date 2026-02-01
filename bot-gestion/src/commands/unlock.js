@@ -7,15 +7,10 @@ module.exports = {
     },
     async execute(message, args) {
         if (!message.guild) return;
-        const { hasWhitelistedRole, hasFullPermissions } = require('../utils/whitelist');
+        const { staff } = require('../utils/perms');
         const { getRandomNoPermission, getRandomWrongChannel, getRandomBotPermission, getRandomError } = require('../utils/messages');
         
-        const hasFullPerms = hasFullPermissions(message.author.id, message.guild?.id);
-        const hasPermission = message.member.permissions.has([PermissionFlagsBits.ManageChannels, PermissionFlagsBits.Administrator]);
-        const hasWhitelist = hasWhitelistedRole(message.member);
-        const isStaff = hasPermission || hasWhitelist || hasFullPerms;
-        
-        if (!isStaff) {
+        if (!staff(message.member)) {
             return message.reply(getRandomNoPermission('unlock', false));
         }
 
