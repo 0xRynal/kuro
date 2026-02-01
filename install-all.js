@@ -3,6 +3,13 @@ const path = require('path');
 const fs = require('fs');
 
 const rootDir = __dirname;
+
+// Install root deps (dotenv pour start-all.js)
+if (fs.existsSync(path.join(rootDir, 'package.json'))) {
+    console.log('[root] npm install...');
+    spawnSync('npm', ['install'], { cwd: rootDir, stdio: 'inherit' });
+}
+
 const bots = fs.readdirSync(rootDir)
     .filter(f => f.startsWith('bot-') && fs.statSync(path.join(rootDir, f)).isDirectory())
     .filter(f => fs.existsSync(path.join(rootDir, f, 'package.json')))
