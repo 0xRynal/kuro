@@ -1,0 +1,16 @@
+{
+  "name": "bot-kyoto-gi",
+  "version": "1.0.0",
+  "description": "Bot Discord pour les giveaways avec système d'invites",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": ["discord", "bot", "giveaway"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "ms": "^2.1.3"
+  }
+}

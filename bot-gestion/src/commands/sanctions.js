@@ -1,0 +1,16 @@
+const config = require('../config');
+const { staff, punitionsChannelOnly } = require('../utils/perms');
+const { getWarns } = require('../utils/warns');
+
+module.exports = { data: { name: 'sanctions' }, async execute(message, args) {
+    if (!message.guild) return;
+    if (!staff(message.member)) return message.reply('❌ Tu n\'as pas les droits.');
+    const target = message.mentions.members?.first();
+    if (!target) return message.reply(`❌ Utilisation: \`${config.prefix}sanctions @user\``);
+    const warns = getWarns(message.guild.id, target.id);
+    if (!warns.length) return message.reply(`📋 ${target} n'a aucun warn.`);
+
+    const lines = warns.map((w, i) => `**${i + 1}.** ${w.reason} — par ${w.by}`);
+    const txt = lines.join('\n').slice(0, 1900);
+    await message.reply({ embeds: [{ color: 0xFFA500, title: `⚠️ Warns de ${target.user.tag} (${warns.length})`, description: txt, timestamp: new Date().toISOString() }] });
+}};

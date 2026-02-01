@@ -1,0 +1,8 @@
+.env
+.env.*
+**/node_modules/
+*.log
+**/data/*.json
+!**/data/*.example.json
+**/config.json
+**/package-lock.json
