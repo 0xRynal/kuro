@@ -1,7 +1,9 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { get } = require('../utils/store');
+const { isKuroBot } = require('../utils/kuroBots');
 
 module.exports = { name: 'guildMemberUpdate', async execute(oldMember, newMember) {
+    if (isKuroBot(newMember.user.id)) return;
     const added = newMember.roles.cache.filter(r => !oldMember.roles.cache.has(r.id));
     if (!added.size) return;
     const g = get(newMember.guild.id);

@@ -1,6 +1,7 @@
 const { PermissionFlagsBits, AuditLogEvent } = require('discord.js');
 const { get } = require('../utils/store');
 const config = require('../config');
+const { isKuroBot } = require('../utils/kuroBots');
 
 const lastLog = new Map();
 const lastDelete = new Map();
@@ -22,7 +23,8 @@ module.exports = { name: 'channelCreate', async execute(channel) {
     try {
         const log = await channel.guild.fetchAuditLogs({ type: AuditLogEvent.ChannelCreate, limit: 1 });
         const entry = log.entries.first();
-        if (entry?.target?.id === channel.id) {
+        if (entry?.target?.id === channel.id && entry?.executor) {
+            if (isKuroBot(entry.executor.id)) return;
             const member = await channel.guild.members.fetch(entry.executor.id).catch(() => null);
             const roles = member?.roles?.cache?.map(r => r.id) || [];
             if (isWhitelisted(g, entry.executor.id, roles)) return;

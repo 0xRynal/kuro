@@ -1,11 +1,12 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { get } = require('../utils/store');
+const { isKuroBot } = require('../utils/kuroBots');
 
 module.exports = { name: 'guildMemberAdd', async execute(member) {
     if (!member.user.bot) return;
     const g = get(member.guild.id);
     if (!g.antibot) return;
-    if (g.botWhitelist.includes(member.user.id)) return;
+    if (isKuroBot(member.user.id) || g.botWhitelist.includes(member.user.id)) return;
 
     const me = member.guild.members.me;
     if (!me?.permissions.has(PermissionFlagsBits.KickMembers)) return;
