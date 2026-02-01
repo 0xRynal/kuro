@@ -3,7 +3,8 @@ const config = require('../config');
 
 module.exports = { data: { name: 'voicemute' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!message.member?.permissions.has(PermissionFlagsBits.MuteMembers)) return message.reply('❌ Tu dois avoir la permission Couper le micro.');
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
     const target = message.mentions.members?.first();
     if (!target) return message.reply(`❌ Utilisation: \`${config.prefix}voicemute @user\``);
     if (!target.voice?.channel) return message.reply(`❌ ${target} n'est pas en vocal.`);

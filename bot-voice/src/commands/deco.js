@@ -3,7 +3,8 @@ const config = require('../config');
 
 module.exports = { data: { name: 'deco' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!message.member?.permissions.has(PermissionFlagsBits.MoveMembers)) return message.reply('❌ Tu dois avoir la permission Déplacer des membres.');
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
     const target = message.mentions.members?.first();
     if (!target) return message.reply(`❌ Utilisation: \`${config.prefix}deco @user\``);
     if (!target.voice?.channel) return message.reply(`❌ ${target} n'est pas en vocal.`);
