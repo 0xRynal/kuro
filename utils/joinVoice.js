@@ -8,26 +8,34 @@ const CMD_TTL_MS = 30000;
 async function doJoin(client, channelId, guildId) {
     try {
         let channel = null;
-        if (guildId) {
-            const guild = client.guilds.cache.get(guildId);
-            if (guild) channel = await guild.channels.fetch(channelId).catch(() => null);
+        const guild = guildId ? client.guilds.cache.get(guildId) : null;
+        if (guild) {
+            channel = guild.channels.cache.get(channelId) || await guild.channels.fetch(channelId).catch(() => null);
+        }
+        if (!channel && guild) {
+            await guild.channels.fetch().catch(() => {});
+            channel = guild.channels.cache.get(channelId);
         }
         if (!channel) {
-            for (const guild of client.guilds.cache.values()) {
-                channel = await guild.channels.fetch(channelId).catch(() => null);
+            for (const g of client.guilds.cache.values()) {
+                channel = g.channels.cache.get(channelId) || await g.channels.fetch(channelId).catch(() => null);
                 if (channel) break;
             }
         }
-        if (!channel) channel = await client.channels.fetch(channelId).catch(() => null);
-        if (!channel?.isVoiceBased?.()) return false;
+        if (!channel) {
+            try { channel = await client.channels.fetch(channelId); } catch { return { ok: false, err: 'channel fetch failed' }; }
+        }
+        if (!channel?.isVoiceBased?.()) return { ok: false, err: 'not voice channel' };
+        const adapter = channel.guild.voiceAdapterCreator;
+        if (!adapter) return { ok: false, err: 'no voice adapter' };
         const { joinVoiceChannel } = require('@discordjs/voice');
         joinVoiceChannel({
             channelId: channel.id,
             guildId: channel.guild.id,
-            adapterCreator: channel.guild.voiceAdapterCreator,
+            adapterCreator: adapter,
         });
-        return true;
-    } catch (_) { return false; }
+        return { ok: true };
+    } catch (e) { return { ok: false, err: e.message || 'unknown' }; }
 }
 
 async function joinVoiceOnReady(client) {
