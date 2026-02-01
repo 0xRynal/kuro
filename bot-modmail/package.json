@@ -4,5 +4,5 @@
   "description": "Modmail - tickets par DM avec channel sur le serveur",
   "main": "index.js",
   "scripts": { "start": "node index.js" },
-  "dependencies": { "discord.js": "^14.14.1", "dotenv": "^17.2.3" }
+  "dependencies": { "discord.js": "^14.14.1", "dotenv": "^17.2.3", "@discordjs/voice": "^0.18.0" }
 }
