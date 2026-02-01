@@ -15,7 +15,6 @@ module.exports = {
         }
 
         const rulesChannelId = '1457139280773120155';
-        const rolesChannelId = '1460814839998840902';
 
         try {
             // send rules embed
@@ -90,39 +89,7 @@ Le but est que chacun puisse profiter d'un espace agréable, sûr et fun.`,
                 });
             }
 
-            // send roles embed
-            const rolesChannel = message.guild.channels.cache.get(rolesChannelId);
-            if (rolesChannel) {
-                await rolesChannel.send({
-                    embeds: [{
-                        color: 0xFFD700,
-                        title: '🎖️ Système de Rangs et Classes',
-                        description: `**🔹 Rangs (C → S)**
-
-Les rangs représentent votre progression initiale. Pour monter de rang, vous devez cumuler un certain nombre d'heures de vocal et atteindre un niveau minimal.
-• **Rang C** : C'est le point de départ. Aucun prérequis, parfait pour commencer à découvrir le serveur et participer aux discussions.
-• **Rang B** : Pour atteindre le rang B, vous devez avoir 10 heures de vocal et un niveau 10. Cela montre votre première implication sérieuse.
-• **Rang A** : Pour le rang A, il faut 20 heures de vocal et un niveau 15. Vous êtes désormais un membre actif et régulier.
-• **Rang S** : Le rang S nécessite 30 heures de vocal et un niveau 20. Vous êtes reconnu comme un membre expérimenté et engagé.
-
-⚠️ Le passage d'un rang à un autre se fait automatiquement dès que vous remplissez les conditions.
-
-⸻
-
-**🔹 Classes (B → S)**
-
-Après le rang S, vous pouvez évoluer vers les classes, qui représentent un niveau supérieur d'engagement et de maîtrise.
-• **Classe B** : Pour atteindre la classe B, vous devez avoir 40 heures de vocal et un niveau 25.
-• **Classe A** : La classe A nécessite 50 heures de vocal et un niveau 30. Vous êtes alors un membre très actif et impliqué.
-• **Classe S** : La classe S est le niveau le plus prestigieux, avec 55 heures de vocal et un niveau 35. Vous êtes un membre exemplaire de la communauté.
-
-💡 Plus vous montez en rang et en classe, plus vous gagnez de responsabilités et privilèges sur le serveur.`,
-                        timestamp: new Date().toISOString(),
-                    }],
-                });
-            }
-
-            await message.reply('✅ Les messages de règles et de rôles ont été envoyés avec succès !');
+            await message.reply('✅ Le message de règles a été envoyé avec succès !');
         } catch (error) {
             console.error('Erreur lors de l\'envoi des messages:', error);
             message.reply(getRandomError());

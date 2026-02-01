@@ -1,4 +1,8 @@
 const { ActivityType } = require('discord.js');
+const { load, updateChannels } = require('../utils/statsChannels');
+const config = require('../config');
+
+const UPDATE_INTERVAL_MS = 5 * 60 * 1000; // 5 min
 
 module.exports = {
     name: 'clientReady',
@@ -13,5 +17,14 @@ module.exports = {
             }],
             status: 'online',
         });
+
+        setInterval(() => {
+            const d = load();
+            const guilds = d.guilds || {};
+            for (const [guildId, cfg] of Object.entries(guilds)) {
+                const guild = client.guilds.cache.get(guildId);
+                if (guild) updateChannels(guild, cfg, config.inviteCode).catch(() => {});
+            }
+        }, UPDATE_INTERVAL_MS);
     },
 };

@@ -11,6 +11,7 @@ module.exports = { data: { name: 'help' }, async execute(message) {
                 { name: 'Voicemute', value: `\`${p}voicemute @user\` \`${p}voiceunmute @user\``, inline: true },
                 { name: 'Deafen', value: `\`${p}deafen @user\` \`${p}undeafen @user\``, inline: true },
                 { name: 'Deco', value: `\`${p}deco @user\``, inline: true },
+                { name: 'Stats', value: `\`${p}stats\` — Affiche les stats\n\`${p}stats setup\` — Crée les channels sous la catégorie\n\`${p}stats update\` — Force la mise à jour`, inline: false },
             ],
             timestamp: new Date().toISOString(),
         }],

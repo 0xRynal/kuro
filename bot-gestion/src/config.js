@@ -20,7 +20,7 @@ function getConfig(guildId) {
 
 module.exports = {
     token: process.env.TOKEN_GESTION || process.env.TOKEN || '',
-    prefix: '!g',
+    prefix: '-',
     muteRoleName: 'Muted',
     maxMuteDuration: 60 * 60 * 1000,
     maxTimeoutDuration: 10 * 60 * 1000,
