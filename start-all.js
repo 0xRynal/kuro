@@ -3,7 +3,17 @@ const path = require('path');
 const fs = require('fs');
 
 const rootDir = __dirname;
-require('dotenv').config({ path: path.join(rootDir, '.env') });
+const envPath = path.join(rootDir, '.env');
+try {
+    if (fs.existsSync(envPath)) {
+        for (const line of fs.readFileSync(envPath, 'utf8').split('\n')) {
+            const m = line.match(/^([^#=]+)=(.*)$/);
+            if (m) process.env[m[1].trim()] = m[2].trim();
+        }
+    }
+} catch (_) {
+    try { require('dotenv').config({ path: envPath }); } catch (_) {}
+}
 
 const TOKEN_KEYS = {
     'bot-gestion': 'TOKEN_GESTION', 'bot-bl': 'TOKEN_BL', 'bot-secur': 'TOKEN_SECUR',
