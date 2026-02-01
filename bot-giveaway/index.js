@@ -801,11 +801,11 @@ client.on(Events.MessageCreate, async (message) => {
     const command = args.shift().toLowerCase();
     
     if (command === 'leave') {
-        const isAuthorized = AUTHORIZED_USERS.includes(message.author.id);
-        const isAdmin = message.member.permissions.has('Administrator');
+        const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+        const isAuthorized = AUTHORIZED_USERS.includes(message.author.id) || ids.includes(message.author.id);
         const isOwner = message.guild.ownerId === message.author.id;
         
-        if (!isAuthorized && !isAdmin && !isOwner) {
+        if (!isAuthorized && !isOwner) {
             return message.reply('Vous devez être administrateur ou propriétaire du serveur pour utiliser cette commande.');
         }
         

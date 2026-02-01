@@ -5,9 +5,8 @@ const { setLimit } = require('../utils/limits');
 module.exports = {
     data: { name: 'setlimit' },
     async execute(message, args) {
-        if (!message.member?.permissions.has(PermissionFlagsBits.ManageRoles)) {
-            return message.reply('❌ Tu dois avoir la permission Gérer les rôles.');
-        }
+        const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+        if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
         const role = message.mentions.roles.first() || message.guild.roles.cache.get(args[0]);
         const max = parseInt(args[1], 10);
         if (!role || !Number.isInteger(max) || max < 1) {

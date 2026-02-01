@@ -3,7 +3,8 @@ const { get } = require('../utils/blr');
 
 module.exports = { data: { name: 'blrlist' }, async execute(message) {
     if (!message.guild) return;
-    if (!message.member?.permissions.has(PermissionFlagsBits.ManageRoles)) return message.reply('❌ Gérer les rôles requis.');
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
     const list = get(message.guild.id);
     if (!list.length) return message.reply('📋 Aucun rôle blacklisté (blrole).');
 

@@ -84,10 +84,7 @@ function canSanction(executor, target) {
         return true;
     }
     
-    // check if executor is owner or admin (can always sanction)
-    if (executor.id === executor.guild.ownerId || executor.permissions.has(PermissionFlagsBits.Administrator)) {
-        return true;
-    }
+    if (executor.id === executor.guild.ownerId) return true;
     
     // check if target has whitelisted role (protected from sanctions)
     const whitelistedRoles = loadWhitelist(target.guild.id);

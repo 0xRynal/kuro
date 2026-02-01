@@ -3,7 +3,8 @@ const config = require('../config');
 const { addRoleThreshold } = require('../utils/autorank');
 
 module.exports = { data: { name: 'setrank' }, async execute(message, args) {
-    if (!message.member.permissions.has(PermissionFlagsBits.ManageRoles)) return message.reply('❌ Gérer les rôles requis.');
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
     const at = parseInt(args[0], 10);
     const role = message.mentions.roles?.first() || message.guild.roles.cache.get(args[1]);
     if (!Number.isInteger(at) || at < 1 || !role) return message.reply(`❌ Utilisation: \`${config.prefix}setrank <messages> @role\` Ex: \`${config.prefix}setrank 100 @Staff\``);

@@ -4,7 +4,8 @@ const { remove, has } = require('../utils/blr');
 
 module.exports = { data: { name: 'blrremove' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!message.member?.permissions.has(PermissionFlagsBits.ManageRoles)) return message.reply('❌ Gérer les rôles requis.');
+    const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+    if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
     const role = message.mentions.roles?.first() || message.guild.roles.cache.get(args[0]);
     if (!role) return message.reply(`❌ Utilisation: \`${config.prefix}blrremove @role\``);
 

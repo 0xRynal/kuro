@@ -4,9 +4,8 @@ const { load } = require('../utils/limits');
 module.exports = {
     data: { name: 'limits' },
     async execute(message) {
-        if (!message.member?.permissions.has(PermissionFlagsBits.ManageRoles)) {
-            return message.reply('❌ Tu dois avoir la permission Gérer les rôles.');
-        }
+        const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+        if (!ids.includes(message.author.id)) return message.reply('❌ Permission requise.');
         const d = load(message.guild.id);
         const entries = Object.entries(d);
         if (!entries.length) return message.reply('📋 Aucune limite de rôle configurée.');
