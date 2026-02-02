@@ -30,18 +30,18 @@ MODMAIL_STAFF_ROLES=... (IDs séparés par virgule)
 
 | Bot | Préfixe | Rôle |
 |-----|---------|------|
-| **bot-gestion** | `-` | warn, sanctions, mute, ban, lock, wl... |
-| **bot-bl** | `=` | Blacklist users |
-| **bot-secur** | `!s` | antiban, antibot, antirole, antichannel |
-| **bot-stats** | `!t` | Membres + en vocal |
-| **bot-voice** | `!v` | move, voicemute, deafen, deco |
-| **bot-autorank** | `!a` | 100 msg = rank, etc. |
-| **bot-limiterole** | `!l` | Limite membres par rôle |
-| **bot-blr** | `!r` | Blacklist rôles |
-| **bot-coin** | `!c` | Économie |
-| **bot-minijeu** | `!j` | Mini-jeux + retrait → bot-coin |
-| **bot-giveaway** | `/` | Giveaways |
-| **bot-modmail** | `!m` | Tickets par DM |
+| **bot-gestion** | `.` | warn, sanctions, mute, ban, lock, wl... |
+| **bot-bl** | `?` | Blacklist users |
+| **bot-secur** | `~` | antiban, antibot, antirole, antichannel |
+| **bot-stats** | `;` | Membres + en vocal |
+| **bot-voice** | `!` | move, voicemute, deafen, deco |
+| **bot-autorank** | `=` | 100 msg = rank, etc. |
+| **bot-limiterole** | `-` | Limite membres par rôle |
+| **bot-blr** | `*` | Blacklist rôles |
+| **bot-coin** | `^` | Économie |
+| **bot-minijeu** | `$` | Mini-jeux + retrait → bot-coin |
+| **bot-giveaway** | `/` | Giveaways (leave) |
+| **bot-modmail** | `\` | Tickets par DM |
 
 ---
 
@@ -51,11 +51,11 @@ Chaque bot expose `!<prefix>set` pour configurer channels/rôles sans modifier l
 
 | Bot | Commande | Options |
 |-----|----------|---------|
-| **modmail** | `!m set <guild\|category\|log\|staff> <id>` | guild, category, log, staff (rôles) |
-| **gestion** | `- set <log\|fullperm\|highrank> <id>` | log, fullperm (userIds), highrank (roleId) |
-| **bl** | `= set log <channelId>` | log |
-| **secur** | `!s set log <channelId>` | log |
-| **minijeu** | `!j set <games\|log\|punitions\|highrank\|fullperm> <id>` | games, log, punitions, highrank, fullperm |
+| **modmail** | `\ set <guild\|category\|log\|staff> <id>` | guild, category, log, staff (rôles) |
+| **gestion** | `. set <log\|fullperm\|highrank> <id>` | log, fullperm (userIds), highrank (roleId) |
+| **bl** | `? set log <channelId>` | log |
+| **secur** | `~ set log <channelId>` | log |
+| **minijeu** | `$ set <games\|log\|punitions\|highrank\|fullperm> <id>` | games, log, punitions, highrank, fullperm |
 
 Config sauvegardée dans `data/<bot>_config.json` ou `data/modmail_config.json`. L'env reste le fallback.
 

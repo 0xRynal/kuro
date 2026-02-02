@@ -23,7 +23,7 @@ function getConfig(guildId) {
 
 module.exports = {
     token: process.env.TOKEN_MINIJEU || process.env.TOKEN || '',
-    prefix: '!j',
+    prefix: '$',
     muteRoleName: 'Muted',
     maxMuteDuration: 60 * 60 * 1000,
     maxTimeoutDuration: 10 * 60 * 1000,

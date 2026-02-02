@@ -9,6 +9,6 @@ function getLogChannelId(guildId) {
 
 module.exports = {
     token: process.env.TOKEN_SECUR || process.env.TOKEN || '',
-    prefix: '!s',
+    prefix: '~',
     getLogChannelId,
 };

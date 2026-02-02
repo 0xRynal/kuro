@@ -17,7 +17,7 @@ function getLogChannelId() { return guildConfig.get('logChannelId') || env.logCh
 
 module.exports = {
     token: process.env.TOKEN_MODMAIL || process.env.TOKEN || '',
-    prefix: '!m',
+    prefix: '\\',
     get guildId() { return getGuildId(); },
     get categoryId() { return getCategoryId(); },
     get staffRoleIds() { return getStaffRoleIds(); },
