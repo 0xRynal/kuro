@@ -39,4 +39,16 @@ function clearWarns(guildId, userId) {
     return n;
 }
 
-module.exports = { getWarns, addWarn, clearWarns };
+function removeWarnAtIndex(guildId, userId, index) {
+    const d = load();
+    if (!d[guildId]?.[userId] || index < 0 || index >= d[guildId][userId].length) return false;
+    d[guildId][userId].splice(index, 1);
+    if (d[guildId][userId].length === 0) {
+        delete d[guildId][userId];
+        if (Object.keys(d[guildId]).length === 0) delete d[guildId];
+    }
+    save(d);
+    return true;
+}
+
+module.exports = { getWarns, addWarn, clearWarns, removeWarnAtIndex };

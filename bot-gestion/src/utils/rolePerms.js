@@ -2,7 +2,7 @@ const guildConfig = require('./guildConfig');
 
 const VALID_PERMS = ['mute', 'unmute', 'timeout', 'untimeout', 'ban', 'unban', 'warn', 'sanctions',
     'addrole', 'rrole', 'lock', 'unlock', 'slowmode', 'wladd', 'wlremove', 'wllist',
-    'semiwladd', 'semiwlremove', 'semiwllist', 'renew', 'warnlist'];
+    'semiwladd', 'semiwlremove', 'semiwllist', 'renew', 'unwarn'];
 
 function getRolePerms(guildId) {
     const p = guildConfig.get(guildId, 'rolePerms');
@@ -38,6 +38,21 @@ function removeRolePerm(guildId, roleId, permName) {
     return true;
 }
 
+function removeRoleFromAllPerms(guildId, roleId) {
+    const data = getRolePerms(guildId);
+    let removed = [];
+    for (const perm of Object.keys(data)) {
+        const i = data[perm].indexOf(roleId);
+        if (i !== -1) {
+            data[perm].splice(i, 1);
+            removed.push(perm);
+            if (data[perm].length === 0) delete data[perm];
+        }
+    }
+    if (removed.length) saveRolePerms(guildId, data);
+    return removed;
+}
+
 function hasRolePerm(member, permName) {
     if (!member?.guild) return false;
     const data = getRolePerms(member.guild.id);
@@ -47,4 +62,4 @@ function hasRolePerm(member, permName) {
     return member.roles.cache.some(r => roleIds.includes(r.id));
 }
 
-module.exports = { getRolePerms, addRolePerm, removeRolePerm, hasRolePerm, VALID_PERMS };
+module.exports = { getRolePerms, addRolePerm, removeRolePerm, removeRoleFromAllPerms, hasRolePerm, VALID_PERMS };
