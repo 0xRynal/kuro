@@ -910,5 +910,7 @@ client.on(Events.ClientReady, async () => {
     }
 });
 
-const token = process.env.DISCORD_TOKEN || require('./config.json').token;
+let token = process.env.TOKEN_GIVEAWAY || process.env.DISCORD_TOKEN;
+if (!token) try { token = require('./config.json').token; } catch {}
+if (!token) { console.error('[giveaway] Token manquant (TOKEN_GIVEAWAY ou config.json)'); process.exit(1); }
 client.login(token);

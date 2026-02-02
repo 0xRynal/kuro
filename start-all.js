@@ -19,8 +19,7 @@ const TOKEN_KEYS = {
     'bot-gestion': 'TOKEN_GESTION', 'bot-bl': 'TOKEN_BL', 'bot-secur': 'TOKEN_SECUR',
     'bot-stats': 'TOKEN_STATS', 'bot-voice': 'TOKEN_VOICE', 'bot-autorank': 'TOKEN_AUTORANK',
     'bot-limiterole': 'TOKEN_LIMITEROLE', 'bot-blr': 'TOKEN_BLR', 'bot-coin': 'TOKEN_COIN',
-    'bot-minijeu': 'TOKEN_MINIJEU', 'bot-modmail': 'TOKEN_MODMAIL',
-    'bot-giveaway': 'DISCORD_TOKEN',
+    'bot-minijeu': 'TOKEN_MINIJEU', 'bot-modmail': 'TOKEN_MODMAIL', 'bot-giveaway': 'TOKEN_GIVEAWAY',
 };
 const hasToken = (f) => {
     const key = TOKEN_KEYS[f];
