@@ -11,7 +11,7 @@ module.exports = { data: { name: 'help' }, async execute(message) {
                 { name: 'Sanctions', value: `\`${p}mute\` \`${p}unmute\` \`${p}timeout\` \`${p}untimeout\` \`${p}ban\` \`${p}unban\``, inline: false },
                 { name: 'Warn', value: `\`${p}warn @user [raison]\` \`${p}sanctions @user\` \`${p}unwarn @user [index]\``, inline: false },
                 { name: 'Rôles', value: `\`${p}addrole @user @role\` \`${p}rrole @user @role\``, inline: false },
-                { name: 'Channels', value: `\`${p}lock\` \`${p}unlock\` \`${p}clear\` \`${p}slowmode <sec> <durée>\``, inline: false },
+                { name: 'Channels', value: `\`${p}lock\` \`${p}unlock\` \`${p}clear\` \`${p}slowmode <sec> <durée>\` \`${p}rename @user <pseudo>\``, inline: false },
                 { name: 'Whitelist', value: `\`${p}wladd @role\` \`${p}wlremove @role\` \`${p}wllist\``, inline: false },
                 { name: 'Semi-WL', value: `\`${p}semiwladd @role\` \`${p}semiwlremove @role\` \`${p}semiwllist\``, inline: false },
                 { name: 'Admin', value: `\`${p}setadmin @role\` \`${p}leave\` \`${p}renew\` \`${p}rulesmessage\` \`${p}joinbotallvc <channelId>\``, inline: false },

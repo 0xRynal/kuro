@@ -1,7 +1,7 @@
 const guildConfig = require('./guildConfig');
 
 const VALID_PERMS = ['mute', 'unmute', 'timeout', 'untimeout', 'ban', 'unban', 'warn', 'sanctions',
-    'addrole', 'rrole', 'lock', 'unlock', 'slowmode', 'wladd', 'wlremove', 'wllist',
+    'addrole', 'rrole', 'lock', 'unlock', 'slowmode', 'rename', 'wladd', 'wlremove', 'wllist',
     'semiwladd', 'semiwlremove', 'semiwllist', 'renew', 'unwarn'];
 
 function getRolePerms(guildId) {
