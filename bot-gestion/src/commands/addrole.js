@@ -1,10 +1,10 @@
 const { PermissionFlagsBits } = require('discord.js');
 const config = require('../config');
-const { staff, full, canSanction, punitionsChannelOnly } = require('../utils/perms');
+const { canUse, full, canSanction } = require('../utils/perms');
 
 module.exports = { data: { name: 'addrole' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!staff(message.member)) return message.reply('❌ Tu n\'as pas les droits.');
+    if (!canUse(message.member, 'addrole')) return message.reply('❌ Tu n\'as pas les droits.');
     const target = message.mentions.members?.first();
     const role = message.mentions.roles?.first() || message.guild.roles.cache.get(args[1]);
     if (!target || !role) return message.reply(`❌ Utilisation: \`${config.prefix}addrole @user @role\``);

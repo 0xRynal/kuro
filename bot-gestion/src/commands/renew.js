@@ -8,10 +8,10 @@ module.exports = {
     async execute(message, args) {
         if (!message.guild) return;
         const { getRandomNoPermission, getRandomError } = require('../utils/messages');
-        const { staff } = require('../utils/perms');
+        const { canUse } = require('../utils/perms');
         const { isHighRank } = require('../utils/whitelist');
         
-        const isStaff = staff(message.member) || isHighRank(message.member);
+        const isStaff = canUse(message.member, 'renew') || isHighRank(message.member);
         
         if (!isStaff) {
             return message.reply('❌ Tu n\'as pas les permissions pour renouveler ce channel.');

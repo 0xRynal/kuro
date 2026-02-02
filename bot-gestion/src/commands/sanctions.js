@@ -1,10 +1,10 @@
 const config = require('../config');
-const { staff, punitionsChannelOnly } = require('../utils/perms');
+const { canUse } = require('../utils/perms');
 const { getWarns } = require('../utils/warns');
 
 module.exports = { data: { name: 'sanctions' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!staff(message.member)) return message.reply('❌ Tu n\'as pas les droits.');
+    if (!canUse(message.member, 'sanctions')) return message.reply('❌ Tu n\'as pas les droits.');
     const target = message.mentions.members?.first();
     if (!target) return message.reply(`❌ Utilisation: \`${config.prefix}sanctions @user\``);
     const warns = getWarns(message.guild.id, target.id);

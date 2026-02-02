@@ -1,5 +1,6 @@
 const { PermissionFlagsBits } = require('discord.js');
 const config = require('../config');
+const { hasRolePerm, getRolePerms } = require('./rolePerms');
 
 function full(userId, guildId) {
     const cfg = config.getConfig(guildId);
@@ -12,6 +13,15 @@ function staff(member) {
     const { hasWhitelistedRole, hasSemiWhitelistedRole, hasAdminRole } = require('./whitelist');
     if (hasWhitelistedRole(member) || hasSemiWhitelistedRole(member) || hasAdminRole(member)) return true;
     return false;
+}
+
+function canUse(member, permName) {
+    if (!member) return false;
+    if (full(member.id, member.guild?.id)) return true;
+    const data = getRolePerms(member.guild?.id);
+    const roleIds = data[permName?.toLowerCase()];
+    if (roleIds?.length) return hasRolePerm(member, permName);
+    return staff(member);
 }
 
 function canSanction(executor, target) {
@@ -27,4 +37,4 @@ function canSanction(executor, target) {
 
 function punitionsChannelOnly() { return false; }
 
-module.exports = { full, staff, canSanction, punitionsChannelOnly };
+module.exports = { full, staff, canUse, canSanction, punitionsChannelOnly };

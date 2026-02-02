@@ -9,9 +9,9 @@ module.exports = {
         if (!message.guild) return;
         const { getRandomNoPermission, getRandomWrongChannel, getRandomError, getRandomInvalidUsage, getRandomUserNotFound, getRandomAlclientReadyWhitelisted } = require('../utils/messages');
         
-        const { staff } = require('../utils/perms');
+        const { canUse } = require('../utils/perms');
         
-        if (!staff(message.member)) {
+        if (!canUse(message.member, 'wladd')) {
             return message.reply(getRandomNoPermission('wladd', false));
         }
 

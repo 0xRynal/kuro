@@ -7,10 +7,10 @@ module.exports = {
     },
     async execute(message, args) {
         if (!message.guild) return;
-        const { staff } = require('../utils/perms');
+        const { canUse } = require('../utils/perms');
         const { getRandomNoPermission, getRandomWrongChannel, getRandomError, getRandomUserNotFound, getRandomBotPermission, getRandomInvalidUsage, getRandomNotTimeouted } = require('../utils/messages');
         
-        if (!staff(message.member)) {
+        if (!canUse(message.member, 'untimeout')) {
             return message.reply(getRandomNoPermission('untimeout', false));
         }
 

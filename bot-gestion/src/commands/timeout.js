@@ -22,12 +22,12 @@ module.exports = {
     },
     async execute(message, args) {
         if (!message.guild) return;
-        const { staff, full } = require('../utils/perms');
+        const { canUse, full } = require('../utils/perms');
         const { getRandomNoPermission, getRandomWrongChannel, getRandomSelfSanction, getRandomBotSanction, getRandomHierarchy, getRandomUserNotFound, getRandomInvalidDuration, getRandomBotPermission, getRandomInvalidUsage } = require('../utils/messages');
         
         const hasFullPerms = full(message.author.id, message.guild?.id);
         
-        if (!staff(message.member)) {
+        if (!canUse(message.member, 'timeout')) {
             return message.reply(getRandomNoPermission('timeout', false));
         }
 

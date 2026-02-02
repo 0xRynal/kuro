@@ -1,11 +1,11 @@
 const { PermissionFlagsBits } = require('discord.js');
 const config = require('../config');
-const { staff, full, canSanction, punitionsChannelOnly } = require('../utils/perms');
+const { canUse, full, canSanction, punitionsChannelOnly } = require('../utils/perms');
 const { getWarns, addWarn } = require('../utils/warns');
 
 module.exports = { data: { name: 'warn' }, async execute(message, args) {
     if (!message.guild) return;
-    if (!staff(message.member)) return message.reply('❌ Tu n\'as pas les droits.');
+    if (!canUse(message.member, 'warn')) return message.reply('❌ Tu n\'as pas les droits.');
     const target = message.mentions.members?.first();
     if (!target) return message.reply(`❌ Utilisation: \`${config.prefix}warn @user [raison]\``);
     if (target.id === message.author.id) return message.reply('❌ Pas de self-warn.');

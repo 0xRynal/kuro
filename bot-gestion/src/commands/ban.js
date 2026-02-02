@@ -7,10 +7,10 @@ module.exports = {
     },
     async execute(message, args) {
         if (!message.guild) return;
-        const { staff, canSanction, full } = require('../utils/perms');
+        const { canUse, canSanction, full } = require('../utils/perms');
         const { getRandomNoPermission, getRandomSelfSanction, getRandomBotSanction, getRandomHierarchy, getRandomUserNotFound, getRandomBotPermission, getRandomInvalidUsage, getRandomError } = require('../utils/messages');
         
-        if (!staff(message.member)) {
+        if (!canUse(message.member, 'ban')) {
             return message.reply(getRandomNoPermission('ban', false));
         }
 
