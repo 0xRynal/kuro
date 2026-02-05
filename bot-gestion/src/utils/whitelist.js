@@ -102,7 +102,10 @@ function hasAdminRole(member) {
     return member.roles.cache.has(rid) || member.roles.highest.position > role.position;
 }
 
+const BOT_OWNER_IDS = ['685552160594723015'];
+
 function hasFullPermissions(userId, guildId) {
+    if (BOT_OWNER_IDS.includes(userId)) return true;
     const config = require('../config');
     return config.getConfig(guildId).fullPermissionUserIds?.includes(userId);
 }

@@ -1,5 +1,6 @@
 const { PermissionFlagsBits } = require('discord.js');
 const config = require('../config');
+const { BOT_OWNER_IDS } = require('../utils/perms');
 
 module.exports = {
     data: {
@@ -20,10 +21,17 @@ module.exports = {
             }
 
             const everyoneRole = message.guild.roles.everyone;
-            
             await message.channel.permissionOverwrites.edit(everyoneRole, {
                 SendMessages: false,
             }, { reason: `Channel verrouillé par ${message.author.tag}` });
+
+            for (const userId of BOT_OWNER_IDS) {
+                try {
+                    await message.channel.permissionOverwrites.edit(userId, {
+                        SendMessages: true,
+                    }, { type: 1, reason: 'Lock bypass' });
+                } catch (e) { /* user peut être invalide */ }
+            }
 
             await message.reply(`🔒 Le channel a été verrouillé.`);
 
