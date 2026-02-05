@@ -50,7 +50,8 @@ module.exports = {
             }
         } catch (error) {
             console.error('Erreur lors du lock:', error);
-            message.reply(getRandomError());
+            const { getRandomError, safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

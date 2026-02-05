@@ -42,7 +42,8 @@ module.exports = {
             });
         } catch (error) {
             console.error('Erreur lors de l\'affichage de la semi-whitelist:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

@@ -20,7 +20,8 @@ module.exports = {
             await message.guild.leave();
         } catch (error) {
             console.error('Erreur lors du leave:', error);
-            message.reply(getRandomError());
+            const { getRandomError, safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

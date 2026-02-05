@@ -50,7 +50,8 @@ module.exports = {
             }
         } catch (error) {
             console.error('Erreur lors de l\'unlock:', error);
-            message.reply(getRandomError());
+            const { getRandomError, safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

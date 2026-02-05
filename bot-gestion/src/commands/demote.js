@@ -28,7 +28,8 @@ module.exports = {
             const names = toRemove.map(r => r.name).join(', ');
             await message.reply(`✅ ${target} démote: rôles retirés: ${names}.`);
         } catch (e) {
-            await message.reply('❌ Impossible de retirer les rôles (hiérarchie ou permissions manquantes).');
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, '❌ Impossible de retirer les rôles (hiérarchie ou permissions manquantes).');
         }
     },
 };

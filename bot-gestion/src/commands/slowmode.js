@@ -109,7 +109,8 @@ module.exports = {
 
         } catch (error) {
             console.error('Erreur lors du slowmode:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

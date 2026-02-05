@@ -101,10 +101,12 @@ module.exports = {
                         message.reply('❌ Impossible de supprimer les messages (ils sont probablement trop anciens).');
                     }
                 } catch (err) {
-                    message.reply(getRandomError());
+                    const { safeReply } = require('../utils/messages');
+                    await safeReply(message, getRandomError());
                 }
             } else {
-                message.reply(getRandomError());
+                const { safeReply } = require('../utils/messages');
+                await safeReply(message, getRandomError());
             }
         }
     },

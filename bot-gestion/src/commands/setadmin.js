@@ -47,7 +47,8 @@ module.exports = {
             await message.reply(response);
         } catch (error) {
             console.error('Erreur lors de la définition du rôle admin:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

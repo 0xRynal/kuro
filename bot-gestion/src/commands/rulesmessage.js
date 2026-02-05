@@ -92,7 +92,8 @@ Le but est que chacun puisse profiter d'un espace agréable, sûr et fun.`,
             await message.reply('✅ Le message de règles a été envoyé avec succès !');
         } catch (error) {
             console.error('Erreur lors de l\'envoi des messages:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

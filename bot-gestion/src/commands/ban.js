@@ -8,7 +8,7 @@ module.exports = {
     async execute(message, args) {
         if (!message.guild) return;
         const { canUse, canSanction, full } = require('../utils/perms');
-        const { getRandomNoPermission, getRandomSelfSanction, getRandomBotSanction, getRandomHierarchy, getRandomUserNotFound, getRandomBotPermission, getRandomInvalidUsage, getRandomError } = require('../utils/messages');
+        const { getRandomNoPermission, getRandomSelfSanction, getRandomBotSanction, getRandomHierarchy, getRandomUserNotFound, getRandomBotPermission, getRandomInvalidUsage, getRandomError, safeReply } = require('../utils/messages');
         
         if (!canUse(message.member, 'ban')) {
             return message.reply(getRandomNoPermission('ban', false));
@@ -175,7 +175,8 @@ module.exports = {
             }
         } catch (error) {
             console.error('Erreur lors du ban:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

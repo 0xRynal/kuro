@@ -40,7 +40,8 @@ module.exports = {
             await message.reply(`✅ Le rôle ${role} a été retiré de la semi-whitelist.`);
         } catch (error) {
             console.error('Erreur lors du retrait du rôle de la semi-whitelist:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

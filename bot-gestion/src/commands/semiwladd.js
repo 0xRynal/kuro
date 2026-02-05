@@ -40,7 +40,8 @@ module.exports = {
             await message.reply(`✅ Le rôle ${role} a été ajouté à la semi-whitelist (mute uniquement).`);
         } catch (error) {
             console.error('Erreur lors de l\'ajout du rôle à la semi-whitelist:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

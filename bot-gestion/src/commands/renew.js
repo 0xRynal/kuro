@@ -66,7 +66,8 @@ module.exports = {
             await newChannel.send(`✅ Channel renouvelé par ${message.author}`);
         } catch (error) {
             console.error('Erreur lors du renouvellement du channel:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

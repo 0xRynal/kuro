@@ -52,7 +52,7 @@ module.exports = {
                     };
                     footerNote = 'Prévisualisation publique (bot non présent sur ce serveur)';
                 } else {
-                    return message.reply('❌ Serveur introuvable : le bot n’y est pas et aucune prévisualisation publique.').catch(() => {});
+                    return message.reply('❌ Impossible : le bot n’est pas dans ce serveur. Discord ne permet la prévisualisation que pour les serveurs avec **Communauté** activée (paramètres du serveur).').catch(() => {});
                 }
             }
         } else {

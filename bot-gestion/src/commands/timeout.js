@@ -143,8 +143,8 @@ module.exports = {
 
         } catch (error) {
             console.error('Erreur lors du timeout:', error);
-            const { getRandomError } = require('../utils/messages');
-            message.reply(getRandomError());
+            const { getRandomError, safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

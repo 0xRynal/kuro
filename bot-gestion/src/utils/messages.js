@@ -12,7 +12,20 @@ const invalidUsage = {
     wlremove: `❌ Utilisation: \`${p}wlremove @role\``,
     setadmin: `❌ Utilisation: \`${p}setadmin @role\``,
 };
+async function safeReply(message, contentOrOptions) {
+    try {
+        await message.reply(contentOrOptions);
+    } catch (e) {
+        const ch = await message.client?.channels?.fetch(message.channelId).catch(() => null);
+        if (ch) {
+            const payload = typeof contentOrOptions === 'string' ? { content: contentOrOptions, reference: { messageId: message.id } } : { ...contentOrOptions, reference: { messageId: message.id } };
+            await ch.send(payload).catch(() => {});
+        }
+    }
+}
+
 module.exports = {
+    safeReply,
     getRandomNoPermission: () => '❌ Tu n\'as pas les droits.',
     getRandomWrongChannel: () => '❌ Utilise le channel punitions.',
     getRandomError: () => '❌ Une erreur s\'est produite.',

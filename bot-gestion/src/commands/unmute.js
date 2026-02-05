@@ -97,7 +97,8 @@ module.exports = {
 
         } catch (error) {
             console.error('Erreur lors de l\'unmute:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

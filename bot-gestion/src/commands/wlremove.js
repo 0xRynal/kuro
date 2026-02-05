@@ -40,7 +40,8 @@ module.exports = {
             await message.reply(`✅ Le rôle ${role} a été retiré de la whitelist.`);
         } catch (error) {
             console.error('Erreur lors de la suppression du rôle de la whitelist:', error);
-            message.reply(getRandomError());
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, getRandomError());
         }
     },
 };

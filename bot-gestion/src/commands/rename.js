@@ -22,7 +22,8 @@ module.exports = {
             await target.setNickname(newName, `Renommé par ${message.author.tag}`);
             await message.reply(`✅ ${target} renommé: **${newName}**`);
         } catch (e) {
-            await message.reply('❌ Erreur (hiérarchie ou permissions manquantes).');
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, '❌ Erreur (hiérarchie ou permissions manquantes).');
         }
     },
 };
