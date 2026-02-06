@@ -29,11 +29,12 @@ async function doJoin(client, channelId, guildId) {
         const adapter = channel.guild.voiceAdapterCreator;
         if (!adapter) return { ok: false, err: 'no voice adapter' };
         const { joinVoiceChannel } = require('@discordjs/voice');
-        joinVoiceChannel({
+        const connection = joinVoiceChannel({
             channelId: channel.id,
             guildId: channel.guild.id,
             adapterCreator: adapter,
         });
+        connection.on('error', (err) => console.error('[joinVoice]', err.message || err));
         return { ok: true };
     } catch (e) { return { ok: false, err: e.message || 'unknown' }; }
 }

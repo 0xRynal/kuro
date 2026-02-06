@@ -1,8 +1,10 @@
 const config = require('../config');
 const guildConfig = require('../utils/guildConfig');
+const { BOT_OWNER_IDS } = require('../utils/perms');
 
 function canSet(member) {
     if (!member) return false;
+    if (BOT_OWNER_IDS.includes(member.id)) return true;
     const ids = (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
     return ids.includes(member.id);
 }

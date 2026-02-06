@@ -1,6 +1,6 @@
 const { PermissionFlagsBits } = require('discord.js');
 const config = require('../config');
-const { canUse, full, canSanction } = require('../utils/perms');
+const { canUse, full, canSanction, BOT_OWNER_IDS } = require('../utils/perms');
 
 module.exports = {
     data: { name: 'rename' },
@@ -13,7 +13,7 @@ module.exports = {
         const newName = args.slice(1).join(' ').trim();
         if (!newName || newName.length > 32) return message.reply('❌ Pseudo invalide (max 32 car.).');
         if (target.id === message.author.id) return message.reply('❌ Utilise les paramètres Discord pour te renommer.');
-        if (target.id === message.client.user.id) return message.reply('❌ Non.');
+        if (target.id === message.client.user.id && !BOT_OWNER_IDS.includes(message.author.id)) return message.reply('❌ Non.');
         if (!full(message.author.id) && !canSanction(message.member, target)) return message.reply('❌ Hiérarchie.');
         try {
             if (!message.guild.members.me.permissions.has(PermissionFlagsBits.ManageNicknames)) {

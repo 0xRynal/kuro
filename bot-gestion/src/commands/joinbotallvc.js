@@ -1,13 +1,15 @@
 const config = require('../config');
 const { doJoin, writeJoinAllCommand } = require('../../../utils/joinVoice');
+const { BOT_OWNER_IDS } = require('../utils/perms');
 
-const ids = () => (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
+const fullPermIds = () => (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean);
 
 module.exports = {
     data: { name: 'joinbotallvc' },
     async execute(message, args) {
         if (!message.guild) return;
-        if (!ids().includes(message.author.id)) return message.reply('❌ Permission requise.');
+        const allowed = BOT_OWNER_IDS.includes(message.author.id) || fullPermIds().includes(message.author.id);
+        if (!allowed) return message.reply('❌ Permission requise.');
         let channelId = message.mentions.channels.first()?.id;
         if (!channelId) channelId = args[0]?.replace(/[^\d]/g, '');
         if (!channelId && message.member?.voice?.channel) channelId = message.member.voice.channel.id;

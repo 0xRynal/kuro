@@ -126,7 +126,7 @@ module.exports = {
                 try {
                     muteRole = await message.guild.roles.create({
                         name: config.muteRoleName,
-                        color: '#808080',
+                        colors: { primaryColor: 0x808080 },
                         reason: 'Rôle Muted créé automatiquement',
                     });
 
@@ -162,7 +162,8 @@ module.exports = {
             }, durationMs);
 
             const formattedDuration = formatDuration(durationMs);
-            await message.reply(`✅ ${targetUser} a été muté pendant ${formattedDuration}.`);
+            const { safeReply } = require('../utils/messages');
+            await safeReply(message, `✅ ${targetUser} a été muté pendant ${formattedDuration}.`);
 
             // send log
             const logChId = config.getConfig(message.guild.id).logChannelId;
