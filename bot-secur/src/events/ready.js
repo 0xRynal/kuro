@@ -1,5 +1,6 @@
 const { ActivityType } = require('discord.js');
 const { joinVoiceOnReady } = require('../../../utils/joinVoice');
+const { startSoumissionPolling } = require('../../../utils/soumissionPolling');
 
 module.exports = {
     name: 'clientReady',
@@ -7,6 +8,7 @@ module.exports = {
     execute(client) {
         console.log(`✅ ${client.user.tag} connecté`);
         joinVoiceOnReady(client);
+        startSoumissionPolling(client);
         client.user.setPresence({
             activities: [{
                 type: ActivityType.Watching,

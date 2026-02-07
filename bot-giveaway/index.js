@@ -598,7 +598,9 @@ async function rerollGiveaway(message, searchId, count) {
 client.once(Events.ClientReady, async () => {
     console.log(`Bot connecté en tant que ${client.user.tag}`);
     const { joinVoiceOnReady } = require('../utils/joinVoice');
+    const { startSoumissionPolling } = require('../utils/soumissionPolling');
     joinVoiceOnReady(client);
+    startSoumissionPolling(client);
     client.user.setPresence({
         activities: [{ type: 3, name: 'discord.gg/kuronai', state: 'https://guns.lol/0xRynal' }],
         status: 'online',

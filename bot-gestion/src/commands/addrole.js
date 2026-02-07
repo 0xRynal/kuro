@@ -8,7 +8,13 @@ module.exports = { data: { name: 'addrole' }, async execute(message, args) {
     const target = message.mentions.members?.first() || (args[0]?.match(/^\d{17,19}$/) ? await message.guild.members.fetch(args[0]).catch(() => null) : null);
     const roleId = args[1]?.replace(/\D/g, '') || message.mentions.roles?.first()?.id;
     const role = message.mentions.roles?.first() || (roleId ? message.guild.roles.cache.get(roleId) || await message.guild.roles.fetch(roleId).catch(() => null) : null);
-    if (!target || !role) return message.reply(`❌ Utilisation: \`${config.prefix}addrole @user|ID @role|ID\``);
+    if (!target || !role) {
+        if (args[0] && args[1] && roleId) {
+            if (!target) return message.reply('❌ Utilisateur introuvable (ID invalide ou pas sur le serveur).');
+            return message.reply('❌ Rôle introuvable (ID invalide).');
+        }
+        return message.reply(`❌ Utilisation: \`${config.prefix}addrole @user|ID @role|ID\``);
+    }
     if (target.id === message.author.id && !full(message.author.id)) return message.reply('❌ Pas d\'auto-add.');
     if (!full(message.author.id) && !canSanction(message.member, target)) return message.reply('❌ Hiérarchie.');
     if (!message.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) return message.reply('❌ Je n\'ai pas la permission Gérer les rôles.');
