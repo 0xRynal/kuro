@@ -5,9 +5,10 @@ const { canUse, full, canSanction } = require('../utils/perms');
 module.exports = { data: { name: 'rrole' }, async execute(message, args) {
     if (!message.guild) return;
     if (!canUse(message.member, 'rrole')) return message.reply('❌ Tu n\'as pas les droits.');
-    const target = message.mentions.members?.first();
-    const role = message.mentions.roles?.first() || message.guild.roles.cache.get(args[1]);
-    if (!target || !role) return message.reply(`❌ Utilisation: \`${config.prefix}rrole @user @role\``);
+    const target = message.mentions.members?.first() || (args[0]?.match(/^\d{17,19}$/) ? await message.guild.members.fetch(args[0]).catch(() => null) : null);
+    const roleId = args[1]?.replace(/\D/g, '') || message.mentions.roles?.first()?.id;
+    const role = message.mentions.roles?.first() || (roleId ? message.guild.roles.cache.get(roleId) || await message.guild.roles.fetch(roleId).catch(() => null) : null);
+    if (!target || !role) return message.reply(`❌ Utilisation: \`${config.prefix}rrole @user|ID @role|ID\``);
     if (!full(message.author.id) && !canSanction(message.member, target)) return message.reply('❌ Hiérarchie.');
     if (!message.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) return message.reply('❌ Je n\'ai pas la permission Gérer les rôles.');
     if (role.position >= message.guild.members.me.roles.highest.position) return message.reply('❌ Ce rôle est au-dessus du mien.');

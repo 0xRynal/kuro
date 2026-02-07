@@ -7,8 +7,8 @@ module.exports = {
     async execute(message, args) {
         if (!message.guild) return;
         if (!canUse(message.member, 'unwarn')) return message.reply('❌ Tu n\'as pas les droits.');
-        const target = message.mentions.members?.first();
-        if (!target) return message.reply(`❌ Usage: \`${config.prefix}unwarn @user [index]\` (index = retirer 1 seul warn)`);
+        const target = message.mentions.members?.first() || (args[0]?.match(/^\d{17,19}$/) ? await message.guild.members.fetch(args[0]).catch(() => null) : null);
+        if (!target) return message.reply(`❌ Usage: \`${config.prefix}unwarn @user|ID [index]\` (index = retirer 1 seul warn)`);
         if (!full(message.author.id) && !canSanction(message.member, target)) return message.reply('❌ Hiérarchie.');
         const warns = getWarns(message.guild.id, target.id);
         if (!warns.length) return message.reply(`📋 ${target} n'a aucun warn.`);

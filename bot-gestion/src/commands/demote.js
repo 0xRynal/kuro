@@ -16,8 +16,8 @@ module.exports = {
     async execute(message, args) {
         if (!message.guild) return;
         if (!full(message.author.id, message.guild.id)) return message.reply('❌ Full perm requis.');
-        const target = message.mentions.members?.first();
-        if (!target) return message.reply(`❌ Usage: \`${config.prefix}demote @user\``);
+        const target = message.mentions.members?.first() || (args[0]?.match(/^\d{17,19}$/) ? await message.guild.members.fetch(args[0]).catch(() => null) : null);
+        if (!target) return message.reply(`❌ Usage: \`${config.prefix}demote @user|ID\``);
         if (target.id === message.author.id) return message.reply('❌ Pas de self-demote.');
         if (!full(message.author.id) && !canSanction(message.member, target)) return message.reply('❌ Hiérarchie.');
         const roleIdsWithPerms = getRolesWithPerms(message.guild.id);

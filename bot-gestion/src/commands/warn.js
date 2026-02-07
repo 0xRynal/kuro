@@ -6,8 +6,8 @@ const { getWarns, addWarn } = require('../utils/warns');
 module.exports = { data: { name: 'warn' }, async execute(message, args) {
     if (!message.guild) return;
     if (!canUse(message.member, 'warn')) return message.reply('❌ Tu n\'as pas les droits.');
-    const target = message.mentions.members?.first();
-    if (!target) return message.reply(`❌ Utilisation: \`${config.prefix}warn @user [raison]\``);
+    const target = message.mentions.members?.first() || (args[0]?.match(/^\d{17,19}$/) ? await message.guild.members.fetch(args[0]).catch(() => null) : null);
+    if (!target) return message.reply(`❌ Utilisation: \`${config.prefix}warn @user|ID [raison]\``);
     if (target.id === message.author.id) return message.reply('❌ Pas de self-warn.');
     if (target.id === message.client.user.id) return message.reply('❌ Non.');
     if (!full(message.author.id) && !canSanction(message.member, target)) return message.reply('❌ Hiérarchie.');

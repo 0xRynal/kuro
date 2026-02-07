@@ -20,12 +20,9 @@ module.exports = {
             return message.reply(getRandomInvalidUsage('wladd'));
         }
 
-        // get role
-        const role = message.mentions.roles.first();
-        
-        if (!role) {
-            return message.reply(getRandomUserNotFound());
-        }
+        const roleId = args[0]?.replace(/\D/g, '') || message.mentions.roles?.first()?.id;
+        const role = message.mentions.roles?.first() || (roleId ? message.guild.roles.cache.get(roleId) || await message.guild.roles.fetch(roleId).catch(() => null) : null);
+        if (!role) return message.reply(getRandomUserNotFound());
 
         try {
             const { addRole, isRoleWhitelisted } = require('../utils/whitelist');

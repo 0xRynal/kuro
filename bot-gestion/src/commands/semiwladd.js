@@ -17,15 +17,12 @@ module.exports = {
 
         // check args
         if (args.length < 1) {
-            return message.reply(`❌ Utilisation: \`${config.prefix}semiwladd @role\``);
+            return message.reply(`❌ Utilisation: \`${config.prefix}semiwladd @role|ID\``);
         }
 
-        // get role
-        const role = message.mentions.roles.first();
-        
-        if (!role) {
-            return message.reply(getRandomUserNotFound());
-        }
+        const roleId = args[0]?.replace(/\D/g, '') || message.mentions.roles?.first()?.id;
+        const role = message.mentions.roles?.first() || (roleId ? message.guild.roles.cache.get(roleId) || await message.guild.roles.fetch(roleId).catch(() => null) : null);
+        if (!role) return message.reply(getRandomUserNotFound());
 
         try {
             const { addSemiWhitelistRole, isRoleSemiWhitelisted } = require('../utils/whitelist');

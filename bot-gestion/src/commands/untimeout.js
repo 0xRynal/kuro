@@ -44,6 +44,9 @@ module.exports = {
         } else {
             targetUser = allMentions.first();
         }
+        if (!targetUser && args[0]?.match(/^\d{17,19}$/)) {
+            targetUser = await message.guild.members.fetch(args[0]).catch(() => null);
+        }
         
         if (!targetUser) {
             return message.reply(getRandomUserNotFound());
