@@ -28,8 +28,9 @@ module.exports = {
                         `**log** ${cfg.logChannelId ? `<#${cfg.logChannelId}>` : '(env)'}`,
                         `**fullperm** ${cfg.fullPermissionUserIds?.length ? cfg.fullPermissionUserIds.join(', ') : '(env)'}`,
                         `**highrank** ${cfg.highRankRoleId ? `<@&${cfg.highRankRoleId}>` : '(env)'}`,
+                        `**welcomestaff** ${cfg.welcomeStaffChannelId ? `<#${cfg.welcomeStaffChannelId}>` : '—'}`,
                     ].join('\n'),
-                    footer: { text: `${p}set <log|fullperm|highrank> <id|ids>` },
+                    footer: { text: `${p}set <log|fullperm|highrank|welcomestaff> <id|ids>` },
                     timestamp: new Date().toISOString(),
                 }],
             });
@@ -54,8 +55,13 @@ module.exports = {
                 guildConfig.set(guildId, 'highRankRoleId', id || '');
                 return message.reply(`✅ High rank: ${id ? `<@&${id}>` : 'désactivé'}`);
             }
+            case 'welcomestaff': {
+                const id = val.replace(/\D/g, '');
+                guildConfig.set(guildId, 'welcomeStaffChannelId', id || '');
+                return message.reply(`✅ Welcome staff: ${id ? `<#${id}>` : 'désactivé'}`);
+            }
             default:
-                return message.reply(`Usage: \`${p}set log|fullperm|highrank <id>\``);
+                return message.reply(`Usage: \`${p}set log|fullperm|highrank|welcomestaff <id>\``);
         }
     },
 };

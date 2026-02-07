@@ -62,4 +62,23 @@ function hasRolePerm(member, permName) {
     return member.roles.cache.some(r => roleIds.includes(r.id));
 }
 
-module.exports = { getRolePerms, addRolePerm, removeRolePerm, removeRoleFromAllPerms, hasRolePerm, VALID_PERMS };
+function isStaffRole(role, guildId) {
+    if (!role?.id || !guildId) return false;
+    const data = getRolePerms(guildId);
+    for (const perm of Object.values(data)) {
+        if (Array.isArray(perm) && perm.includes(role.id)) return true;
+    }
+    const { PermissionFlagsBits } = require('discord.js');
+    const staffPerms = [
+        PermissionFlagsBits.ManageMessages,
+        PermissionFlagsBits.KickMembers,
+        PermissionFlagsBits.BanMembers,
+        PermissionFlagsBits.ManageRoles,
+        PermissionFlagsBits.ModerateMembers,
+        PermissionFlagsBits.ManageChannels,
+        PermissionFlagsBits.ManageGuild,
+    ];
+    return staffPerms.some(perm => role.permissions.has(perm));
+}
+
+module.exports = { getRolePerms, addRolePerm, removeRolePerm, removeRoleFromAllPerms, hasRolePerm, isStaffRole, VALID_PERMS };

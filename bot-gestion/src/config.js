@@ -4,6 +4,7 @@ const env = {
     logChannelId: process.env.LOG_CHANNEL_ID || '',
     fullPermissionUserIds: (process.env.FULL_PERM_IDS || '').split(',').map(s => s.trim()).filter(Boolean),
     highRankRoleId: process.env.HIGH_RANK_ROLE_ID || '',
+    welcomeStaffChannelId: '',
 };
 
 function getConfig(guildId) {
@@ -15,6 +16,7 @@ function getConfig(guildId) {
         logChannelId: g.logChannelId ?? env.logChannelId,
         fullPermissionUserIds: Array.isArray(fp) ? fp : (fp ? String(fp).split(',').map(s => s.trim()).filter(Boolean) : env.fullPermissionUserIds),
         highRankRoleId: hr ?? env.highRankRoleId,
+        welcomeStaffChannelId: g.welcomeStaffChannelId ?? env.welcomeStaffChannelId,
     };
 }
 
